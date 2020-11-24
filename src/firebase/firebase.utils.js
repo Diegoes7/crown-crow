@@ -3,14 +3,14 @@ import "firebase/firestore";
 import "firebase/auth";
 
 const config = {
-  apiKey: "AIzaSyBT4IpBtAMspNkt-Hu-f14D0HqGgkwtC2k",
-  authDomain: "crown-crow.firebaseapp.com",
-  databaseURL: "https://crown-crow.firebaseio.com",
-  projectId: "crown-crow",
-  storageBucket: "crown-crow.appspot.com",
-  messagingSenderId: "970664839537",
-  appId: "1:970664839537:web:02b92e188b46dce7ff0ed0",
-  measurementId: "G-2YDVJ6T07G",
+   apiKey: "AIzaSyBT4IpBtAMspNkt-Hu-f14D0HqGgkwtC2k",
+    authDomain: "crown-crow.firebaseapp.com",
+    databaseURL: "https://crown-crow.firebaseio.com",
+    projectId: "crown-crow",
+    storageBucket: "crown-crow.appspot.com",
+    messagingSenderId: "970664839537",
+    appId: "1:970664839537:web:02b92e188b46dce7ff0ed0",
+    measurementId: "G-2YDVJ6T07G"
 };
 
 firebase.initializeApp(config);
@@ -30,10 +30,10 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
         displayName,
         email,
         createdAt,
-        ...additionalData,
+        ...additionalData
       });
     } catch (error) {
-      console.log("error creating user", error.message);
+      console.log('error creating user', error.message);
     }
   }
 
@@ -47,7 +47,7 @@ export const addCollectionAndDocuments = async (
   const collectionRef = firestore.collection(collectionKey);
 
   const batch = firestore.batch();
-  objectsToAdd.forEach((obj) => {
+  objectsToAdd.forEach(obj => {
     const newDocRef = collectionRef.doc();
     batch.set(newDocRef, obj);
   });
@@ -55,15 +55,15 @@ export const addCollectionAndDocuments = async (
   return await batch.commit();
 };
 
-export const convertCollectionsSnapshotToMap = (collections) => {
-  const transformedCollection = collections.docs.map((doc) => {
+export const convertCollectionsSnapshotToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
     const { title, items } = doc.data();
 
     return {
       routeName: encodeURI(title.toLowerCase()),
       id: doc.id,
       title,
-      items,
+      items
     };
   });
 
@@ -73,20 +73,20 @@ export const convertCollectionsSnapshotToMap = (collections) => {
   }, {});
 };
 
-export const getCurrentUser =() => {
+export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged(userAuth => {
       unsubscribe();
-      resolve(userAuth)
-    }, reject)
-  }) 
-}
+      resolve(userAuth);
+    }, reject);
+  });
+};
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 export const googleProvider = new firebase.auth.GoogleAuthProvider();
-googleProvider.setCustomParameters({ prompt: "select_account" });
+googleProvider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
 
 export default firebase;

@@ -10,6 +10,6 @@ export const SignUpContainer = styled.div`
   }
 `;
 
-export const SignUpTitleConatiner = styled.h2`
+export const SignUpTitle = styled.h2`
   margin: 10px 0;
 `;

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { useEffect, lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -22,20 +22,11 @@ const ContactPage = lazy(() =>
   import("./pages/contact-page/contact-page.component")
 );
 
-class App extends React.Component {
-  unsubcribeFromAuth = null;
-
-  componentDidMount() {
-    const { checkUserSession } = this.props
-
+const App =({checkUserSession, currentUser}) => {
+  useEffect(() => {
     checkUserSession()
-  }
+  }, [checkUserSession])
 
-  componentWillUnmount() {
-    this.unsubcribeFromAuth();
-  }
-
-  render() {
     return (
       <div>
         <GlobalStyle />
@@ -51,7 +42,7 @@ class App extends React.Component {
                 exact
                 path="/signin"
                 render={() =>
-                  this.props.currentUser ? (
+                  currentUser ? (
                     <Redirect to="/" />
                   ) : (
                     <SigInAndSignUpPage />
@@ -64,7 +55,6 @@ class App extends React.Component {
       </div>
     );
   }
-}
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
